@@ -1,0 +1,196 @@
+\documentclass{amsart}
+\synctex=1
+
+%=================================================================
+% 
+\newcount\DraftStatus  % 0 suppresses notes to selves in text
+\DraftStatus=1   % TODO: set to 0 for final version
+%=================================================================
+
+%=================================================================
+\usepackage{comment}
+%=================================================================
+%
+\includecomment{JournalOnly}  
+\includecomment{ConferenceOnly}  
+\includecomment{TulipStyle}
+%
+%=================================================================
+\input{preamble}
+
+
+%=================================================================
+%
+\begin{document}
+%
+%=================================================================
+%
+\title[Report]{FILP 00 Final Report}%
+
+\author{Mingxi Wang}
+\address[A.~1]{School of Computer Science,\\ 
+Jilin University, ChangChun 130012, China}%
+\email[A.~1]{mxwang@tulip.academy}
+
+
+%\thanks{Thanks to \ldots}%
+\subjclass{Artificial Intelligence}%
+\date{\gitAuthorDate}%
+
+\input{abstract}
+
+
+\maketitle
+\tableofcontents
+
+\newpage
+%=================================================================
+
+%wmxgaidongde
+%\input{mainbody}
+\section{Research motivation and context}
+
+
+
+\subsection{Project Objectives}
+The project analyzed 12 years of crime reports from all of San Francisco's neighborhoods to create a model that can predict crime categories at a given time and place.\\
+
+\subsection{Project background}
+Crime is a kind of behavior that does great harm to the society. It brings great loss of life and property to human beings.In modern society, human beings prevent crime through strict judicial means, and research on crime prevention based on sociology, psychology and law.\\
+
+%wmx:\hspace*{0.6cm} is The indentation symbol
+\hspace*{0.6cm}The objective of this project is to quantitatively analyze a data set of nearly 12 years of crime reports from all San Francisco neighborhoods by computer means and to create a model that predicts the type of crime that will occur given information such as time and location.\\
+
+
+\newpage
+\section{Research contents and methods}
+
+\subsection{Evaluation metric}
+	\begin{itemize}
+		\item 878,049 samples, a total of 9 features.
+	\end{itemize}
+	\begin{itemize}
+	\item Date, category, description, day of the week, name of the police district, solution, approximate street address of the crime, longitude, latitude.
+	\end{itemize}
+
+	.\\
+
+	\begin{itemize}
+	\item First date:  2003-01-06 00:01:00
+	\end{itemize}
+	\begin{itemize}
+	\item Last date:  2015-05-13 23:53:00
+	\end{itemize}
+	\begin{itemize}
+	\item Test data shape  (878049, 9)
+	\end{itemize}
+
+	
+	\begin{center}
+		\begin{figure}[htbp]
+			\includegraphics[scale=0.6]{./pic/qmcode1.eps}
+			\caption{preview I}
+		\end{figure}
+	\end{center}
+
+	\begin{center}
+	\begin{figure}[htbp]
+		\includegraphics[scale=0.5]{./pic/qmyangben.eps}
+		\caption{preview II}
+	\end{figure}
+\end{center}
+
+\newpage
+
+\subsection{Data cleaning}
+	\begin{itemize}
+		\item There are 2323 duplicate items that need to be removed
+	\end{itemize}
+	train.duplicated().sum()
+	\begin{itemize}
+		\item Throw away samples in a range of longitude and latitude (e.g., 50)
+	\end{itemize}
+
+\subsection{Characteristics of the engineering}
+	\begin{center}
+		\begin{figure}[htbp]
+			\includegraphics[scale=0.7]{./pic/qmzhengtai.eps}
+			\caption{Distribution of number of incidents per day}
+		\end{figure}
+	\end{center}
+\hspace*{0.6cm}Similarly, there was no significant deviation in the frequency of events over the course of the week.
+\begin{center}
+	\begin{figure}[htbp]
+		\includegraphics[scale=0.7]{./pic/qmzhifangtu.eps}
+		\caption{incidents per Weekday}
+	\end{figure}
+\end{center}
+\hspace*{0.6cm}A total of 39 discrete categories of incidents were recorded by police stations, the most common being theft (19.91\%), non-criminal cases (10.50\%) and assault (8.77\%)
+
+\begin{figure}[htbp]
+	\includegraphics[scale=0.5]{./pic/qmshuxingtu.eps}
+	\caption{incidents per Crime Category}
+\end{figure}
+
+	\hspace*{0.6cm}The chart below shows the average number of incidents per hour for the five crime categories.
+	Obviously, different crimes occur with different frequencies at different times of the day.
+	Prostitution, for example, takes place mostly at night, gambling incidents take place from late at night until morning, and burglaries from early morning until afternoon.
+	As before, this is clear evidence that time parameters will also play an important role.
+	
+	\begin{figure}[htbp]
+		\includegraphics[scale=0.7]{./pic/qmzhexiantu.eps}
+		\caption{average number of incidents per hour}
+	\end{figure}
+
+	\begin{itemize}
+	\item From the "Date" field, we extracted the date, month, year, hours, minutes, days, and days since the first day.
+	\item We extracted from the "Address" field whether the event occurred at the intersection or on a building component.
+\end{itemize}
+
+\subsection{Information coding}
+	The discrete data is converted to a number between 0 and N-1, where N is the number of different values in a list.You can think of it as the number of different values of a feature.\\
+
+\subsection{Training model}
+	\begin{itemize}
+		\item Train 23 Epochs.
+		\item Use cross validation to evaluate the quality of our model.\\
+		After training, the model obtained:
+		\item a cross validation score of 2.46.
+		\item it got 2.49 on the test set.
+	\end{itemize}
+
+
+
+\newpage
+
+\section{Architecture of the model}
+
+The model architecture consists of six steps, as follows:\\
+
+	\begin{itemize}
+	\item 1. Make the decision tree fit the data\\
+	\item 2. Evaluation model\\
+	\item 3. Add weight to incorrect samples.\\
+	\item 4. Select the leaf nodes with the greatest incremental loss for growth.\\
+	\item 5. Generate the tree at the node in the previous step.\\
+	\item 6. Go to Step 2 for the cycle\\
+\end{itemize}
+
+\newpage
+\section{Conclusion}
+
+	Conclusion: Based on data analysis, processing and utilization, our model can effectively predict crime types.By using the multi-classification algorithm to analyze the input features and update the model parameters through iterative training, our model can be trained more and more accurately.So as to complete the task of classification prediction.\\
+	\\
+
+
+% ----------------------------------------------------------------
+%\newpage
+%\bibliography{tuliplab,yourbib}
+% TODO: you should change this yourbib into a proper bib file name
+%\bibliographystyle{plainnat}
+%=================================================================
+
+%\listoftodos
+
+\end{document}
+
