@@ -162,15 +162,15 @@ Wang Mingxi
 \\Jilin University
 \\College of Computer Science and Technology
 }
-\date{\gitCommitterDate}
-%\date{\today} %暂时手写改动
+%\date{\gitCommitterDate}
+\date{\today} %暂时手写改动
 
 % Customize the setting of slides
 \pdsetup{
 % TODO: Customize the left footer, and right footer
 rf=\href{http://www.tulip.org.au}{
-Last Changed by: \textsc{\gitCommitterName}\ \gitVtagn-\gitAbbrevHash\ (\gitAuthorDate)
-%Last Changed by: \textsc{Mingxi Wang}\ \gitVtagn-\gitAbbrevHash\ (\today)
+%Last Changed by: \textsc{\gitCommitterName}\ \gitVtagn-\gitAbbrevHash\ (\gitAuthorDate)
+Last Changed by: \textsc{Mingxi Wang}\ (\today)
 },
 cf={flip01-kaggle},
 }
@@ -201,12 +201,12 @@ cf={flip01-kaggle},
 \begin{slide}{Project Objectives}
 
 \begin{itemize}
-\item Adversarial samples are generated on the MNIST dataset
+\item Determine whether the disaster reflected in the tweets is real
 \end{itemize}
 
 \begin{center}
 	\begin{figure}[htbp]
-		\includegraphics[scale=0.4]{./pic/1.eps}
+		\includegraphics[scale=0.5]{./pic/1.eps}
 	\end{figure}
 \end{center}
 
@@ -216,139 +216,144 @@ cf={flip01-kaggle},
 
 %%==========================================================================================
 %%
-\begin{slide}{Project background}
-\raggedright
-In the real world, there are some unnatural data, they may be corroded existence, may be man-made.
-It is interesting that these phenomena exist.
-In the case of images, we can perturb some images so that the classifier fails, but it doesn't look different to the human eye.
-This is called counterattack.
-The purpose of this Kaggle project is to generate some of these "unnatural" images on the MNIST dataset to trick the classifier, while the human eye looks normal.
+\begin{slide}{Project background I}
+A tweet that says there's a fire in ABA, ablaze means fire, it's the key word in the whole tweet, it means it's a disaster tweet, so it's marked 1. It could also be a key word in "getting people angry," which is disaster\_neutral Twitter, and it should be flagged zero. \\
+\begin{center}
+	\begin{figure}[htbp]
+		\includegraphics[scale=0.8]{./pic/2.eps}
+	\end{figure}
+\end{center}
+\end{slide}
+\begin{slide}{Project background II}
+	So our task was to build a model that could pick out tweets that were actually disasters and mark them as 1, and distinguish between tweets that were not disasters and tweets that were not disasters and mark them as 0. The test.csv file has 3,263 such tweets waiting to be tagged.
 \end{slide}
 
 \section{Research contents and methods}
 
 %%
 %%==========================================================================================
-\begin{slide}{Import the MNIST dataset}
+\begin{slide}{Import the file AND Discard the same data}
 %当有多个Kaggle Subject而只想在目录出现一次时，在后面几次Kaggle Subject前加上[toc=,bm=]
-	\raggedright
-from subprocess import check_output\\
-print(check_output(["ls", "../input"]).decode("utf8"))\\
-df = pd.read_csv("../input/digit-recognizer/train.csv")\\
-df.head()
+train=pd.read\_csv('./nlp\_getting\_started/train.csv')\\
+test=pd.read\_csv('./nlp\_getting\_started/test.csv')\\
+\\
+df = data\\
+df = data.drop\_duplicates().\\
+\end{slide}
+
+\begin{slide}{Solve the category imbalance}
+\begin{itemize}
+	\item  The imbalance of categories (i.e., labels, 0,1) causes the classifier to bias the test set prediction. Too many positive examples in the training set will lead to the model's tendency to predict the test set as positive examples and vice versa. \\
+\item Target = 0 has 4,322 tweets and target = 1 has 3,239 tweets. It's about 4 3. It's OK, don't change it.\\
+\end{itemize}
+\end{slide}
+
+\begin{slide}{Data cleaning}
+	def clean\_text(text):\\
+	temp = text.lower()          \\                       
+	temp = re.sub('n', ' ' , temp)   \\                  
+	temp = re.sub('\'', '', temp)     \\                  
+	temp = re.sub('', ' ', temp)    \\                   
+	temp = re.sub(r'(http|https|pic.)S', ' ', temp)    \\
+	temp = re.sub(r'[s]', ' ', temp)       \\         
+	return temp
+\end{slide}
+\begin{slide}{Delete stop word}
+def remove\_stopwords(text):\\
+	temp = [text for text in text.split() if len(text) > 3]\\
+	tokenized\_words = word\_tokenize(text)\\
+	temp = [word for word in tokenized\_words if word not in stop\_words]\\
+	temp = ' '.join(temp)\\
+	return temp\\
+\end{slide}
+\begin{slide}{Data cleaning}
+\begin{itemize}
+	\item There is an artificial addition to the dataset of "clean" : the Twitter text after it has been cleaned.\\
+\end{itemize}
+train['clean'] = train['text'].apply(clean\_text)\\
+train['clean'] = train['clean'].apply(remove\_stopwords)\\
+train['clean'] = train['text'].apply(clean\_text)\\
+train['clean'] = train['clean'].apply(remove\_stopwords)\\
+\end{slide}
+\begin{slide}{Add artificial features}
+			\begin{itemize}
+			\item In order to analyze the needs, we should first establish a new combination attribute: that is, the cleaned feature and the keyword are combined with blank space as the new feature.\\
+			\end{itemize}
+		def combine\_attributes(text, keyword):\\
+		var\_list = [text, keyword]\\
+		combined = ' '.join(x for x in var\_list if x)\\
+		return combined\\
+		train.fillna('', inplace = True)\\
+		train['combine'] = train.apply(lambda x:\\ combine\_attributes(x['clean'],x['keyword']), axis = 1)\\
+		test.fillna('', inplace = True)\\
+		test['combine'] = test.apply(lambda x:\\ combine\_attributes(x['clean'],x['keyword']), axis = 1)\\
+\end{slide}
+\begin{slide}{Data set segmentation}
+		\begin{itemize}
+			\item The training data were divided according to the ratio of 8 2, with 0.8 of the data training model and 0.2 of the data testing the training effect of the model.\\
+		\end{itemize}
+		X = train['combine']\\
+		y = train['target']\\
+		X\_train, X\_test, y\_train, y\_test = train\_test\_split(X, y, train\_size=0.8)\\
+\end{slide}
+
+\begin{slide}[toc=,bm=]{Word frequency inverse text frequency (TF IDF) processing}
+	\begin{itemize}
+	\item The word frequency\_inverse text frequency (TF\_IDF) processing is used to add weight to words in the text.
+	\end{itemize}
+	from sklearn.feature\_extraction.text import TfidfVectorizer\\
+	\\
+	vectorizer = TfidfVectorizer()\\
+	\\
+	X\_train\_vect = vectorizer.fit\_transform(X\_train)\\
+	X\_train\_vect\_all = vectorizer.transform(train['clean'])\\
+	X\_test\_vect = vectorizer.transform(X\_test)\\
+	X\_test\_vect\_all = vectorizer.transform(test['clean'])\\
+
+\end{slide}
+
+\begin{slide}{Visualization heat map I}
+import seaborn as sns 
+from sklearn.metrics import accuracy\_score, confusion\_matrix 
+import matplotlib.pyplot as plt 
+conf\_mat = confusion\_matrix(y\_test, y\_pred) 
+fig, ax = plt.subplots(figsize=(10,8)) 
+sns.heatmap(conf\_mat,cmap="Oranges")  
+plt.ylabel('actually',fontsize=18) 
+plt.xlabel('predict',fontsize=18) 
 \begin{center}
 	\begin{figure}[htbp]
-		\includegraphics[scale=0.7]{./pic/2.eps}
+		\includegraphics[scale=0.8]{./pic/3.eps}
 	\end{figure}
 \end{center}
-
-\end{slide}
-
-\begin{slide}{Split the training set and test set}
-	\begin{itemize}
-	\item 	The data set is divided into two parts: training set and testing set.\\
-	\end{itemize}
-
-y = df.label.values\\
-X = df.drop("label",axis=1).values\\
-X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.4, random_state=0)\\
-
-\end{slide}
-
-\begin{slide}[toc=,bm=]{The initial preparation}
-	\begin{itemize}
-	\item Sort out the training set test set and train the classification model
-	\end{itemize}
-	self.images = X_test\\
-        self.true_targets = y_test\\
-        self.num_samples = X_test.shape[0]\\
-        self.train(X_train, y_train)\\
-        print("Model training finished.")\\
-        self.test(X_test, y_test)\\
-        print("Model testing finished. Initial accuracy score: " + str(self.initial_score))\\
-
-\end{slide}
-
-\begin{slide}{Get disturbance}
-		gradient = gradient_method(target, pred_proba, self.weights)\\
-inf_norm = np.max(gradient)\\
-perturbation = epsilon/inf_norm * gradient\\
-
-	\begin{itemize}
-		\item The last line of code says, divide the gradient by the maximum element in the gradient, which is an operation that normalizes the gradient.
-		Epsilon is an artificial input proportionality constant, which refers to how many times the gradient is magnified.
-		The bigger it is, the bigger the gradient is going to be.
-	\end{itemize}
-	
 	
 \end{slide}
-
-\begin{slide}{Attack function}
-	
-	def attack(self, attackmethod, epsilon):\\
-        perturbed_images, highest_epsilon = self.perturb_images(epsilon, attackmethod)\\
-        perturbed_preds = self.model.predict(perturbed_images)\\
-        score = accuracy_score(self.true_targets, perturbed_preds)\\
-        return perturbed_images, perturbed_preds, score, highest_epsilon\\
-	\begin{itemize}
-	\item 	The perturbed image is obtained, and the highest perturbation is obtained
-	\end{itemize}
-	
+\begin{slide}{Visualization heat map II}
+As you can see, there are fewer categories of 1 (target = 1) and more categories of 0. And the prediction was wrong more often when category 0 was classified as category 1 than when 1 was classified as category 0.
 \end{slide}
 
-\begin{slide}[toc=,bm=]{drawing I}
-	sns.set()\\
-	plt.figure(figsize=(10,5))\\
-	plt.plot(attack.epsilons, attack.scores, 'g*')\\
-	plt.ylabel('accuracy_score')\\
-	plt.xlabel('epsilon')\\
-	plt.title('Accuracy score breakdown - non-targeted attack')\\
-	
-\end{slide}
 
-\begin{slide}[toc=,bm=]{drawing II}
-		The greater the disturbance, the lower the accuracy of the model.The accuracy of the model declines fastest in the middle.But if the disturbance is too large, the human eye will not be able to distinguish the picture, and will lose the meaning of confrontation.
-	\begin{center}
-		\begin{figure}[htbp]
-			\includegraphics[scale=0.6]{./pic/3.eps}
-		\end{figure}
-	\end{center}
-\end{slide}
-
-\begin{slide}[toc=,bm=]{Experimental output display}
-example_results = pd.DataFrame(data=attack.true_targets, columns=['y_true'])\\
-example_results['y_fooled'] = example_preds\\
-example_results['y_predicted'] = attack.preds\\
-example_results['id'] = example_results.index.values\\
-example_results.head()
-		\begin{figure}[htbp]
-			\includegraphics[scale=0.9]{./pic/4.eps}
-		\end{figure}
+\begin{slide}{The model was created by "support vector machine classification" SVC}
+	from sklearn.svm import SVC\\
+	from sklearn.svm import LinearSVC\\
 	
+	clf = SVC(kernel = 'linear')\\
+	clf.fit(X\_train\_vect, y\_train)\\
+	
+	y\_pred = clf.predict(X\_test\_vect)\\
 \end{slide}
 
 \section{Conclusion}
 
-
-\begin{slide}{Data visualization and analysis I}
-	\begin{itemize}
-	\item 	The data distribution of fooled target is shown in the figure below
-\end{itemize}
-
-	\begin{figure}[htbp]
-	\includegraphics[scale=0.8]{./pic/5.eps}
-	\end{figure}
-
-\end{slide}
-\begin{slide}{Data visualization and analysis II}
-	
-	We see that eight is often chosen as a target for deception, and this may have something to do with the internal characteristics of the number, which we don't know.\\
-	Personally, it is because 8 is a centrally symmetric figure, so other numbers can imitate its features with the least amount of perturbation on average.\\
-	Although 0 is also a centrally symmetric figure, : in that it is empty : the identification of the image as 0 requires additional perturbation, so the probability of Fooled Label being 0 is low.\\
-	Because 2, 3, 5, and 9 share some similarities with 8 in their representation : in that they share a semicircular structure : the Fooled Target is only second to them in the probability that they were chosen.
-	These phenomena imply the internal information of data characteristics, and the disturbance is the lateral representation of this information.
+\begin{slide}[toc=,bm=]{Evaluation model}
+from sklearn.metrics import accuracy\_score\\
+accuracy\_score(y\_test, y\_pred)\\
+\\
+RESULT : 0.8006\\
 	
 \end{slide}
+
+
 %%
 %%==========================================================================================
 
