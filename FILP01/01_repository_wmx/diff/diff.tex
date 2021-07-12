@@ -1,0 +1,486 @@
+%
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL old_slides.tex   Mon Jul 12 20:48:51 2021
+%DIF ADD slides.tex       Mon Jul 12 20:24:09 2021
+% ---------------------------------------------------------------
+% Copyright (C) 2012-2018 Gang Li
+% ---------------------------------------------------------------
+%
+% This work is the default powerdot-tuliplab style test file and may be
+% distributed and/or modified under the conditions of the LaTeX Project Public
+% License, either version 1.3 of this license or (at your option) any later
+% version. The latest version of this license is in
+% http://www.latex-project.org/lppl.txt and version 1.3 or later is part of all
+% distributions of LaTeX version 2003/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% This Current Maintainer of this work is Gang Li.
+%
+%
+
+\documentclass[
+ size=14pt,
+ paper=smartboard,  %a4paper, smartboard, screen
+ mode=present, 		%present, handout, print
+ display=slides, 	% slidesnotes, notes, slides
+ style=tuliplab,  	% TULIP Lab style
+ pauseslide,
+ fleqn,leqno]{powerdot}
+
+
+%我自己增加的两端对其用
+\usepackage{ragged2e}
+\renewcommand{\raggedright}{\leftskip=0pt \rightskip=0pt plus 0cm}
+
+
+\usepackage{cancel}
+\usepackage{caption}
+\usepackage{stackengine}
+\usepackage{smartdiagram}
+\usepackage{attrib}
+\usepackage{amssymb}
+\usepackage{amsmath} 
+\usepackage{amsthm} 
+\usepackage{mathtools}
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage{boxedminipage}
+\usepackage{rotate}
+\usepackage{calc}
+\usepackage[absolute]{textpos}
+\usepackage{psfrag,overpic}
+\usepackage{fouriernc}
+\usepackage{pstricks,pst-3d,pst-grad,pstricks-add,pst-text,pst-node,pst-tree}
+\usepackage{moreverb,epsfig,subfigure}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{etex}
+\usepackage{breqn}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{bibentry}
+\usepackage{gitinfo2}
+\usepackage{siunitx}
+\usepackage{nicefrac}
+%\usepackage{geometry}
+%\geometry{verbose,letterpaper}
+\usepackage{media9}
+\usepackage{animate}
+%\usepackage{movie15}
+\usepackage{auto-pst-pdf}
+
+%\usepackage{breakurl}
+\usepackage{fontawesome}
+\usepackage{xcolor}
+\usepackage{multicol}
+
+
+
+\usepackage{verbatim}
+\usepackage[utf8]{inputenc}
+\usepackage{dtk-logos}
+\usepackage{tikz}
+\usepackage{adigraph}
+%\usepackage{tkz-graph}
+\usepackage{hyperref}
+%\usepackage{ulem}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\usepackage{fontawesome}
+
+
+\usepackage{todonotes}
+% \usepackage{pst-rel-points}
+\usepackage{animate}
+\usepackage{fontawesome}
+
+\usepackage{listings}
+\lstset{frameround=fttt,
+frame=trBL,
+stringstyle=\ttfamily,
+backgroundcolor=\color{yellow!20},
+basicstyle=\footnotesize\ttfamily}
+\lstnewenvironment{code}{
+\lstset{frame=single,escapeinside=`',
+backgroundcolor=\color{yellow!20},
+basicstyle=\footnotesize\ttfamily}
+}{}
+
+
+\usepackage{hyperref}
+\hypersetup{ % TODO: PDF meta Data
+  pdftitle={Kaggle sildes},
+  pdfauthor={Wang Mingxi},
+  pdfpagemode={FullScreen},
+  pdfborder={0 0 0}
+}
+
+
+% \usepackage{auto-pst-pdf}
+% package to show source code
+
+\definecolor{LightGray}{rgb}{0.9,0.9,0.9}
+\newlength{\pixel}\setlength\pixel{0.000714285714\slidewidth}
+\setlength{\TPHorizModule}{\slidewidth}
+\setlength{\TPVertModule}{\slideheight}
+\newcommand\highlight[1]{\fbox{#1}}
+\newcommand\icite[1]{{\footnotesize [#1]}}
+
+\newcommand\twotonebox[2]{\fcolorbox{pdcolor2}{pdcolor2}
+{#1\vphantom{#2}}\fcolorbox{pdcolor2}{white}{#2\vphantom{#1}}}
+\newcommand\twotoneboxo[2]{\fcolorbox{pdcolor2}{pdcolor2}
+{#1}\fcolorbox{pdcolor2}{white}{#2}}
+\newcommand\vpspace[1]{\vphantom{\vspace{#1}}}
+\newcommand\hpspace[1]{\hphantom{\hspace{#1}}}
+\newcommand\COMMENT[1]{}
+
+\newcommand\placepos[3]{\hbox to\z@{\kern#1
+        \raisebox{-#2}[\z@][\z@]{#3}\hss}\ignorespaces}
+
+\renewcommand{\baselinestretch}{1.2}
+
+
+\newcommand{\draftnote}[3]{
+	\todo[author=#2,color=#1!30,size=\footnotesize]{\textsf{#3}}	}
+% TODO: add yourself here:
+%
+\newcommand{\gangli}[1]{\draftnote{blue}{GLi:}{#1}}
+\newcommand{\shaoni}[1]{\draftnote{green}{sn:}{#1}}
+\newcommand{\gliMarker}
+	{\todo[author=GLi,size=\tiny,inline,color=blue!40]
+	{Gang Li has worked up to here.}}
+\newcommand{\snMarker}
+	{\todo[author=Sn,size=\tiny,inline,color=green!40]
+	{Shaoni has worked up to here.}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% title
+% TODO: Customize to your Own Title, Name, Address
+%
+\title{The Final Report}
+\author{
+Wang Mingxi
+\\
+\\Jilin University
+\\College of Computer Science and Technology
+}
+%\date{\gitCommitterDate}
+\date{\today} %暂时手写改动
+
+% Customize the setting of slides
+\pdsetup{
+% TODO: Customize the left footer, and right footer
+rf=\href{http://www.tulip.org.au}{
+%Last Changed by: \textsc{\gitCommitterName}\ \gitVtagn-\gitAbbrevHash\ (\gitAuthorDate)
+Last Changed by: \textsc{Mingxi Wang}\ (\today)
+},
+cf={flip01-kaggle},
+}
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
+\providecommand{\DIFmodend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+\newcommand{\DIFscaledelfig}{0.5}
+%DIF HIGHLIGHTGRAPHICS PREAMBLE %DIF PREAMBLE
+\RequirePackage{settobox} %DIF PREAMBLE
+\RequirePackage{letltxmacro} %DIF PREAMBLE
+\newsavebox{\DIFdelgraphicsbox} %DIF PREAMBLE
+\newlength{\DIFdelgraphicswidth} %DIF PREAMBLE
+\newlength{\DIFdelgraphicsheight} %DIF PREAMBLE
+% store original definition of \includegraphics %DIF PREAMBLE
+\LetLtxMacro{\DIFOincludegraphics}{\includegraphics} %DIF PREAMBLE
+\newcommand{\DIFaddincludegraphics}[2][]{{\color{blue}\fbox{\DIFOincludegraphics[#1]{#2}}}} %DIF PREAMBLE
+\newcommand{\DIFdelincludegraphics}[2][]{% %DIF PREAMBLE
+\sbox{\DIFdelgraphicsbox}{\DIFOincludegraphics[#1]{#2}}% %DIF PREAMBLE
+\settoboxwidth{\DIFdelgraphicswidth}{\DIFdelgraphicsbox} %DIF PREAMBLE
+\settoboxtotalheight{\DIFdelgraphicsheight}{\DIFdelgraphicsbox} %DIF PREAMBLE
+\scalebox{\DIFscaledelfig}{% %DIF PREAMBLE
+\parbox[b]{\DIFdelgraphicswidth}{\usebox{\DIFdelgraphicsbox}\\[-\baselineskip] \rule{\DIFdelgraphicswidth}{0em}}\llap{\resizebox{\DIFdelgraphicswidth}{\DIFdelgraphicsheight}{% %DIF PREAMBLE
+\setlength{\unitlength}{\DIFdelgraphicswidth}% %DIF PREAMBLE
+\begin{picture}(1,1)% %DIF PREAMBLE
+\thicklines\linethickness{2pt} %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,0){\framebox(1,1){}}}% %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,0){\line( 1,1){1}}}% %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,1){\line(1,-1){1}}}% %DIF PREAMBLE
+\end{picture}% %DIF PREAMBLE
+}\hspace*{3pt}}} %DIF PREAMBLE
+} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddbegin}{\DIFaddbegin} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddend}{\DIFaddend} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelbegin}{\DIFdelbegin} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelend}{\DIFdelend} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddbegin}{\DIFOaddbegin \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelbegin}{\DIFOdelbegin \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddbeginFL}{\DIFaddbeginFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddendFL}{\DIFaddendFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelbeginFL}{\DIFdelbeginFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelendFL}{\DIFdelendFL} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddbeginFL}{\DIFOaddbeginFL \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelbeginFL}{\DIFOdelbeginFL \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+%DIF LISTINGS PREAMBLE %DIF PREAMBLE
+\RequirePackage{listings} %DIF PREAMBLE
+\RequirePackage{color} %DIF PREAMBLE
+\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
+%DIF DIFCODE_UNDERLINE %DIF PREAMBLE
+  moredelim=[il][\color{red}\sout]{\%DIF\ <\ }, %DIF PREAMBLE
+  moredelim=[il][\color{blue}\uwave]{\%DIF\ >\ } %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
+	language=DIFcode, %DIF PREAMBLE
+	basicstyle=\ttfamily, %DIF PREAMBLE
+	columns=fullflexible, %DIF PREAMBLE
+	keepspaces=true %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+\begin{document}
+
+\maketitle
+
+%\begin{slide}{Overview}
+%\tableofcontents[content=sections]
+%\end{slide}
+
+
+%%==========================================================================================
+%%
+\begin{slide}[toc=,bm=]{Overview}
+\tableofcontents[content=currentsection,type=1]
+\end{slide}
+%%
+%%==========================================================================================
+
+
+\section{Research motivation and context}
+
+%%==========================================================================================
+%%
+\begin{slide}{Project Objectives}
+
+\begin{itemize}
+\item Determine whether the disaster reflected in the tweets is real
+\end{itemize}
+
+\begin{center}
+	\begin{figure}[htbp]
+		\includegraphics[scale=0.5]{./pic/1.eps}
+	\end{figure}
+\end{center}
+
+\end{slide}
+%%
+%%==========================================================================================
+
+%%==========================================================================================
+%%
+\begin{slide}{Project background I}
+A tweet that says there's a fire \DIFdelbegin \DIFdel{which is in aba}\DIFdelend \DIFaddbegin \DIFadd{in ABA}\DIFaddend , ablaze means fire, it's the key word in the whole tweet, it means \DIFaddbegin \DIFadd{it's }\DIFaddend a disaster tweet, \DIFdelbegin \DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{so }\DIFaddend it's \DIFaddbegin \DIFadd{marked }\DIFaddend 1. It could also be a key word in "getting people angry," which is disaster\_neutral Twitter, and it should be flagged zero. \\
+\begin{center}
+	\begin{figure}[htbp]
+		\includegraphics[scale=0.8]{./pic/2.eps}
+	\end{figure}
+\end{center}
+\end{slide}
+\begin{slide}{Project background II}
+	So our task was to build a model that could pick out tweets that were actually disasters and mark them as \DIFdelbegin \DIFdel{1. }\DIFdelend \DIFaddbegin \DIFadd{1, and distinguish between tweets that were not disasters and tweets that were not disasters and mark them as 0. }\DIFaddend The test.csv file has 3,263 such tweets waiting to be tagged.
+\end{slide}
+
+\section{Research contents and methods}
+
+%%
+%%==========================================================================================
+\begin{slide}{Import the file AND Discard the same data}
+%当有多个Kaggle Subject而只想在目录出现一次时，在后面几次Kaggle Subject前加上[toc=,bm=]
+train=pd.read\_csv('./nlp\_getting\_started/train.csv')\\
+test=pd.read\_csv('./nlp\_getting\_started/test.csv')\\
+\\
+df = data\\
+df = data.drop\_duplicates().\\
+\end{slide}
+
+\begin{slide}{Solve the category imbalance}
+\begin{itemize}
+	\item  The imbalance of categories (i.e., labels, 0,1) causes the classifier to bias the test set prediction. \DIFaddbegin \DIFadd{Too many positive examples in the training set will lead to the model's tendency to predict the test set as positive examples and vice versa. }\DIFaddend \\
+\item Target = 0 has 4,322 tweets and target = 1 has 3,239 tweets. It's about 4 3. It's OK, don't change it.\\
+\end{itemize}
+\end{slide}
+
+\begin{slide}{Data cleaning}
+	def clean\_text(text):\\
+	temp = text.lower()          \\                       
+	temp = re.sub('n', ' ' , temp)   \\                  
+	temp = re.sub('\'', '', temp)     \\                  
+	temp = re.sub('', ' ', temp)    \\                   
+	temp = re.sub(r'(http|https|pic.)S', ' ', temp)    \\
+	temp = re.sub(r'[s]', ' ', temp)       \\         
+	return temp
+\end{slide}
+\begin{slide}{Delete stop word}
+def remove\_stopwords(text):\\
+	temp = [text for text in text.split() if len(text) > 3]\\
+	tokenized\_words = word\_tokenize(text)\\
+	temp = [word for word in tokenized\_words if word not in stop\_words]\\
+	temp = ' '.join(temp)\\
+	return temp\\
+\end{slide}
+\begin{slide}{Data cleaning}
+\begin{itemize}
+	\item There is an artificial addition to the dataset of "clean" : the Twitter text after it has been cleaned.\\
+\end{itemize}
+train['clean'] = train['text'].apply(clean\_text)\\
+train['clean'] = train['clean'].apply(remove\_stopwords)\\
+train['clean'] = train['text'].apply(clean\_text)\\
+train['clean'] = train['clean'].apply(remove\_stopwords)\\
+\end{slide}
+\begin{slide}{Add artificial features}
+			\begin{itemize}
+			\item In order to analyze the needs, we should first establish a new combination attribute\DIFdelbegin \DIFdel{.
+		}\DIFdelend \DIFaddbegin \DIFadd{: that is, the cleaned feature and the keyword are combined with blank space as the new feature.}\\
+			\end{itemize}
+		\DIFaddend def combine\_attributes(text, keyword):\\
+		var\_list = [text, keyword]\\
+		combined = ' '.join(x for x in var\_list if x)\\
+		return combined\\
+		train.fillna('', inplace = True)\\
+		train['combine'] = train.apply(lambda x:\\ combine\_attributes(x['clean'],x['keyword']), axis = 1)\\
+		test.fillna('', inplace = True)\\
+		test['combine'] = test.apply(lambda x:\\ combine\_attributes(x['clean'],x['keyword']), axis = 1)\\
+\end{slide}
+\begin{slide}{Data set segmentation}
+		\begin{itemize}
+			\item The training data were divided according to the ratio of 8 2, with 0.8 of the data training model and 0.2 of the data testing the training effect of the model.\\
+		\end{itemize}
+		X = train['combine']\\
+		y = train['target']\\
+		X\_train, X\_test, y\_train, y\_test = train\_test\_split(X, y, train\_size=0.8)\\
+\end{slide}
+
+\begin{slide}[toc=,bm=]{Word frequency inverse text frequency (TF IDF) processing}
+	\begin{itemize}
+	\item The word frequency\_inverse text frequency (TF\_IDF) processing is used to add weight to words in the text.
+	\end{itemize}
+	from sklearn.feature\_extraction.text import TfidfVectorizer\\
+	\\
+	vectorizer = TfidfVectorizer()\\
+	\\
+	X\_train\_vect = vectorizer.fit\_transform(X\_train)\\
+	X\_train\_vect\_all = vectorizer.transform(train['clean'])\\
+	X\_test\_vect = vectorizer.transform(X\_test)\\
+	X\_test\_vect\_all = vectorizer.transform(test['clean'])\\
+
+\end{slide}
+
+\begin{slide}{Visualization heat map I}
+import seaborn as sns 
+from sklearn.metrics import accuracy\_score, confusion\_matrix 
+import matplotlib.pyplot as plt 
+conf\_mat = confusion\_matrix(y\_test, y\_pred) 
+fig, ax = plt.subplots(figsize=(10,8)) 
+sns.heatmap(conf\_mat,cmap="Oranges")  
+plt.ylabel('actually',fontsize=18) 
+plt.xlabel('predict',fontsize=18) 
+\begin{center}
+	\begin{figure}[htbp]
+		\includegraphics[scale=0.8]{./pic/3.eps}
+	\end{figure}
+\end{center}
+
+\end{slide}
+\begin{slide}{Visualization heat map II}
+As you can see, there are fewer categories of 1 (target = 1) and more categories of \DIFaddbegin \DIFadd{0. And the prediction was wrong more often when category 0 was classified as category 1 than when 1 was classified as category }\DIFaddend 0.
+\end{slide}
+
+
+\begin{slide}{The model was created by "support vector machine classification" SVC}
+	from sklearn.svm import SVC\\
+	from sklearn.svm import LinearSVC\\
+
+	clf = SVC(kernel = 'linear')\\
+	clf.fit(X\_train\_vect, y\_train)\\
+
+	y\_pred = clf.predict(X\_test\_vect)\\
+\end{slide}
+
+\section{Conclusion}
+
+\begin{slide}[toc=,bm=]{Evaluation model}
+from sklearn.metrics import accuracy\_score\\
+accuracy\_score(y\_test, y\_pred)\\
+\\
+RESULT : 0.8006\\
+
+\end{slide}
+
+
+%%
+%%==========================================================================================
+
+%%==========================================================================================
+%%
+
+%%
+%%==========================================================================================
+
+
+
+%%
+%%==========================================================================================
+
+
+%%==========================================================================================
+% TODO: Contact Page
+\begin{wideslide}[toc=,bm=]{Contact Information}
+\centering
+\vspace{\stretch{1}}
+\twocolumn[
+lcolwidth=0.35\linewidth,
+rcolwidth=0.65\linewidth
+]
+{
+% \centerline{\includegraphics[scale=.2]{tulip-logo.eps}}
+}
+{
+\vspace{\stretch{1}}
+Wang Mingxi\\
+College of Computer Science and Technology\\
+Jilin University, China
+\begin{description}
+ \item[\textcolor{orange}{\faEnvelope}] \href{mailto:mxwang@tulip.academy}
+ {\textsc{\footnotesize{mxwang@tulip.academy}}}
+
+ \item[\textcolor{orange}{\faHome}] \href{http://www.tulip.org.au}
+ {\textsc{\footnotesize{Team for Universal Learning and Intelligent Processing}}}
+\end{description}
+}
+\vspace{\stretch{1}}
+\end{wideslide}
+
+\end{document}
+
+\endinput

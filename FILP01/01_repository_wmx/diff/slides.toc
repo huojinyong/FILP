@@ -1,0 +1,16 @@
+\pdcontentsline{1}{3}{Research motivation and context}
+\pdcontentsline{0}{4}{Project Objectives}
+\pdcontentsline{0}{5}{Project background I}
+\pdcontentsline{0}{6}{Project background II}
+\pdcontentsline{1}{7}{Research contents and methods}
+\pdcontentsline{0}{8}{Import the file AND Discard the same data}
+\pdcontentsline{0}{9}{Solve the category imbalance}
+\pdcontentsline{0}{10}{Data cleaning}
+\pdcontentsline{0}{11}{Delete stop word}
+\pdcontentsline{0}{12}{Data cleaning}
+\pdcontentsline{0}{13}{Add artificial features}
+\pdcontentsline{0}{14}{Data set segmentation}
+\pdcontentsline{0}{16}{Visualization heat map I}
+\pdcontentsline{0}{17}{Visualization heat map II}
+\pdcontentsline{0}{18}{The model was created by "support vector machine classification" SVC}
+\pdcontentsline{1}{19}{Conclusion}
